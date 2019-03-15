@@ -1,0 +1,42 @@
+#lang scheme
+
+(define list-size 
+  (lambda (alist)
+    (if    (empty? alist)
+      0
+      (+ 1 (list-size (cdr alist))))))
+
+(define firstNElements
+(lambda (list n)
+(if (= n 0)
+    '()
+    (cons (car list) (firstNElements(cdr list) (- n 1)))
+  )
+  ))
+
+(define firstNElements-with-padding
+(lambda (list n)
+(if (= n 0)
+    '()
+      (if (empty? list)
+          (cons '* (firstNElements-with-padding list (- n 1)))
+      (cons (car list) (firstNElements-with-padding (cdr list) (- n 1)))))))
+
+(define ngrams
+  (lambda (los n)
+(if (> n (list-size los))
+    '()
+    (cons (firstNElements los n) (ngrams (cdr los) n)))
+    
+    )
+  )
+
+(define ngrams-with-padding
+  (lambda (los n)
+(if (empty? los)
+    '()
+    (cons (firstNElements-with-padding los n) (ngrams-with-padding (cdr los) n)))
+    
+    )
+  )
+
